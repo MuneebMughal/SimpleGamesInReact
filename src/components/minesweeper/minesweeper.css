@@ -1,0 +1,27 @@
+.mainContainer {
+  min-height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(
+    117deg,
+    rgba(123, 216, 96, 1) 39.2%,
+    rgba(255, 255, 255, 1) 156.2%
+  );
+}
+
+.boardContainer {
+  padding-top: 2rem;
+  margin: auto;
+}
+.gridHeader {
+  background-color: #4a752c;
+  padding: 1rem;
+  width: 100%;
+}
+.heading{
+    padding-top: 2rem;
+    font-family: 'Dongle', sans-serif;
+    font-size: 3rem;
+}
+.cell:hover{
+  background-color: aqua;
+}

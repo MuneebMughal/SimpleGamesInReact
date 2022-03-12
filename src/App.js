@@ -1,8 +1,10 @@
 import React from 'react'
-
+import Grid from './components/minesweeper/Grid'
 const App = () => {
   return (
-    <div>App</div>
+    <div >
+     <Grid />
+    </div>
   )
 }
 
