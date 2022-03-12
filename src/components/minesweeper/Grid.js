@@ -1,4 +1,7 @@
-import { makeGrid ,openCell} from "../../utils/minesweeper/makeGrid";
+import {
+  makeGrid,
+  clickCellFirstTime,
+} from "../../utils/minesweeper/makeGrid";
 import DIFFICULTY_LEVEL from "../../constants/minesweeper/constants";
 import { useEffect, useState } from "react";
 import "./minesweeper.css";
@@ -10,7 +13,7 @@ const Grid = () => {
   const [height, setHeight] = useState("400px");
   const [width, setWidth] = useState("500px");
   const [cellDimension, setCellDimension] = useState("50px");
-  const [firstClick,setFirstClick] = useState(true);
+  const [firstClick, setFirstClick] = useState(true);
   useEffect(() => {
     const getGrid = () => {
       const _grid = makeGrid(diff);
@@ -38,6 +41,14 @@ const Grid = () => {
   const handleClick = (cell, e) => {
     if (!grid[cell.posX][cell.posY].flagged) {
       setGrid([...grid], (grid[cell.posX][cell.posY].isOpened = true));
+      if (firstClick && cell.value === "X") {
+        let pos = clickCellFirstTime(grid, cell);
+        setGrid(
+          [...grid],
+          (grid[pos.mineX][pos.mineY].value = "X"),
+          (grid[cell.posX][cell.posY].value = "B")
+        );
+      }
     }
   };
   const handleRightClick = (cell, e) => {

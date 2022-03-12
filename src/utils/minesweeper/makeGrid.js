@@ -1,4 +1,3 @@
-import DIFFICULTY_LEVEL from "../../constants/minesweeper/constants";
 export const generateRandomNumber = (lowerLimit, upperLimit) => {
   return Math.floor(
     Math.random() * (upperLimit - lowerLimit) - Math.random() * lowerLimit
@@ -41,6 +40,14 @@ export const makeGrid = (diff) => {
   }
   grid = makeMines(grid, diff);
   return grid;
+};
+export const clickCellFirstTime = (grid, cell) => {
+  let mineX, mineY;
+  do {
+    mineX = generateRandomNumber(0, grid.length);
+    mineY = generateRandomNumber(0, grid[0].length);
+  } while (grid[mineX][mineY].value !== "B");
+  return { mineX, mineY };
 };
 export const openCell = (grid, cell, firstClick = false) => {
   if (firstClick) {

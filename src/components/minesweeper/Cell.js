@@ -13,7 +13,6 @@ const Cell = (props) => {
     }
     setOpen(props.values.isOpened);
     setFlag(props.values.flag);
-    //console.log('useEffect of Cell called');
   }, [props.values]);
   useEffect(() => {
     if (open && props.values.toggle) {
@@ -59,7 +58,8 @@ const Cell = (props) => {
       style={{ ...props.styles, backgroundColor: bgc }}
     >
       <div className="text-center">
-        {flag ? "F" : open ? props.values.value : ""}
+        {/* {flag ? "F" : open ? props.values.value : ""} */}
+        {props.values.value}
       </div>
     </div>
   );
