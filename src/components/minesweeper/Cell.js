@@ -14,6 +14,9 @@ const Cell = (props) => {
     setOpen(props.values.isOpened);
     setFlag(props.values.flag);
   }, [props.values]);
+//   useEffect(()=>{
+//       console.log('UseEffect of Cell Called');
+//   },[props.values.value])
   useEffect(() => {
     if (open && props.values.toggle) {
       setBgc("#e6c1a0");

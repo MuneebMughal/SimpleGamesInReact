@@ -1,6 +1,7 @@
 import {
   makeGrid,
   clickCellFirstTime,
+  openCell,
 } from "../../utils/minesweeper/makeGrid";
 import DIFFICULTY_LEVEL from "../../constants/minesweeper/constants";
 import { useEffect, useState } from "react";
@@ -20,10 +21,13 @@ const Grid = () => {
       setGrid(_grid);
     };
     getGrid();
+    setFirstClick(true);
+    // console.log('useEffect Diff call');
   }, [diff]);
   const handleChange = (e) => {
     setDiff(DIFFICULTY_LEVEL[e.target.value]);
     setGrid([]);
+    // console.log('Handle Difficulty Call');
     if (e.target.value === "EASY") {
       setHeight("400px");
       setWidth("500px");
@@ -41,14 +45,21 @@ const Grid = () => {
   const handleClick = (cell, e) => {
     if (!grid[cell.posX][cell.posY].flagged) {
       setGrid([...grid], (grid[cell.posX][cell.posY].isOpened = true));
-      if (firstClick && cell.value === "X") {
-        let pos = clickCellFirstTime(grid, cell);
-        setGrid(
-          [...grid],
-          (grid[pos.mineX][pos.mineY].value = "X"),
-          (grid[cell.posX][cell.posY].value = "B")
-        );
+      if (firstClick) {
+        setGrid([...openCell(grid, cell, firstClick)]);
+        setFirstClick(false);
       }
+
+      // console.log(grid);
+      //   if (firstClick && cell.value === "X") {
+      //     let pos = clickCellFirstTime(grid, cell);
+      //     setGrid(
+      //       [...grid],
+      //       (grid[pos.mineX][pos.mineY].value = "X"),
+      //       (grid[cell.posX][cell.posY].value = "B")
+      //     );
+      //     setFirstClick(false);
+      //   }
     }
   };
   const handleRightClick = (cell, e) => {
@@ -61,7 +72,6 @@ const Grid = () => {
       );
     }
   };
-
   return (
     <div className="mainContainer">
       <h1 className="heading text-center">Minesweeper</h1>

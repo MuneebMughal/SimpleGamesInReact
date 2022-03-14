@@ -15,6 +15,70 @@ const makeMines = (grid, diff) => {
   }
   return grid;
 };
+const calSurroundingMines = (grid) => {
+  if (grid) {
+    // console.log("Grid Consoling===>>", grid);
+    let rows = grid.length;
+    let cols = grid[0].length;
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        if (grid[row][col].value !== "X") {
+          let surMines = 0;
+          if (
+            grid[row - 1] &&
+            grid[row - 1][col - 1] &&
+            grid[row - 1][col - 1].value === "X"
+          ) {
+            surMines++;
+          }
+          if (
+            grid[row - 1] &&
+            grid[row - 1][col] &&
+            grid[row - 1][col].value === "X"
+          ) {
+            surMines++;
+          }
+          if (
+            grid[row - 1] &&
+            grid[row - 1][col + 1] &&
+            grid[row - 1][col + 1].value === "X"
+          ) {
+            surMines++;
+          }
+          if (grid[row][col - 1] && grid[row][col - 1].value === "X") {
+            surMines++;
+          }
+          if (grid[row][col + 1] && grid[row][col + 1].value === "X") {
+            surMines++;
+          }
+          if (
+            grid[row + 1] &&
+            grid[row + 1][col - 1] &&
+            grid[row + 1][col - 1].value === "X"
+          ) {
+            surMines++;
+          }
+          if (
+            grid[row + 1] &&
+            grid[row + 1][col] &&
+            grid[row + 1][col].value === "X"
+          ) {
+            surMines++;
+          }
+          if (
+            grid[row + 1] &&
+            grid[row + 1][col + 1] &&
+            grid[row + 1][col + 1].value === "X"
+          ) {
+            surMines++;
+          }
+          grid[row][col].value = surMines;
+        }
+      }
+    }
+  }
+  return grid;
+};
 export const makeGrid = (diff) => {
   let grid = [];
   let tog = false;
@@ -41,14 +105,7 @@ export const makeGrid = (diff) => {
   grid = makeMines(grid, diff);
   return grid;
 };
-export const clickCellFirstTime = (grid, cell) => {
-  let mineX, mineY;
-  do {
-    mineX = generateRandomNumber(0, grid.length);
-    mineY = generateRandomNumber(0, grid[0].length);
-  } while (grid[mineX][mineY].value !== "B");
-  return { mineX, mineY };
-};
+
 export const openCell = (grid, cell, firstClick = false) => {
   if (firstClick) {
     if (cell.value === "X") {
@@ -62,7 +119,7 @@ export const openCell = (grid, cell, firstClick = false) => {
           grid[cell.posX][cell.posY].value = "B";
         }
       } while (cell.value !== "B");
-      //console.log(grid);
+      grid = [...calSurroundingMines(grid)];
     }
     return grid;
   } else {
