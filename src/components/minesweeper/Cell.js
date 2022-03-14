@@ -62,7 +62,7 @@ const Cell = (props) => {
     >
       <div className="text-center">
         {/* {flag ? "F" : open ? props.values.value : ""} */}
-        {props.values.value}
+        {open ? props.values.value: props.values.value}
       </div>
     </div>
   );

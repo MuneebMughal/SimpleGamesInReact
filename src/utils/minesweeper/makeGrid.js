@@ -105,7 +105,79 @@ export const makeGrid = (diff) => {
   grid = makeMines(grid, diff);
   return grid;
 };
-
+const openSurroundingCells = (grid, cell) => {
+  let row = cell.posX;
+  let col = cell.posY;
+  if (cell.value === 0 && cell.isOpened === false) {
+    grid[row][col].isOpened = true;
+    if (
+      grid[row - 1] &&
+      grid[row - 1][col - 1] &&
+      grid[row - 1][col - 1].value === 0 &&
+      grid[row - 1][col - 1].isOpened === false
+    ) {
+      
+      grid = [...openSurroundingCells(grid, grid[row - 1][col - 1])];
+    }
+    if (
+      grid[row - 1] &&
+      grid[row - 1][col] &&
+      grid[row - 1][col].value === 0 &&
+      grid[row - 1][col].isOpened === false
+    ) {
+      grid = [...openSurroundingCells(grid, grid[row - 1][col])];
+    }
+    if (
+      grid[row - 1] &&
+      grid[row - 1][col + 1] &&
+      grid[row - 1][col + 1].value === 0 &&
+      grid[row - 1][col + 1].isOpened === false
+    ) {
+      grid = [...openSurroundingCells(grid, grid[row - 1][col + 1])];
+    }
+    if (
+      grid[row][col - 1] &&
+      grid[row][col - 1].value === 0 &&
+      grid[row][col - 1].isOpened === false
+    ) {
+      grid = [...openSurroundingCells(grid, grid[row][col - 1])];
+    }
+    if (
+      grid[row][col + 1] &&
+      grid[row][col + 1].value === 0 &&
+      grid[row][col + 1].isOpened === false
+    ) {
+      grid = [...openSurroundingCells(grid, grid[row][col + 1])];
+    }
+    if (
+      grid[row + 1] &&
+      grid[row + 1][col - 1] &&
+      grid[row + 1][col - 1].value === 0 &&
+      grid[row + 1][col - 1].isOpened === false
+    ) {
+      grid = [...openSurroundingCells(grid, grid[row + 1][col - 1])];
+    }
+    if (
+      grid[row + 1] &&
+      grid[row + 1][col] &&
+      grid[row + 1][col].value === 0 &&
+      grid[row + 1][col].isOpened === false
+    ) {
+      grid = [...openSurroundingCells(grid, grid[row + 1][col])];
+    }
+    if (
+      grid[row + 1] &&
+      grid[row + 1][col + 1] &&
+      grid[row + 1][col + 1].value === 0 &&
+      grid[row + 1][col + 1].isOpened === false
+    ) {
+      grid = [...openSurroundingCells(grid, grid[row + 1][col + 1])];
+    }
+  } else {
+    grid[row][col].isOpened = true;
+  }
+  return grid;
+};
 export const openCell = (grid, cell, firstClick = false) => {
   if (firstClick) {
     if (cell.value === "X") {
@@ -119,10 +191,8 @@ export const openCell = (grid, cell, firstClick = false) => {
           grid[cell.posX][cell.posY].value = "B";
         }
       } while (cell.value !== "B");
-      grid = [...calSurroundingMines(grid)];
     }
-    return grid;
-  } else {
-    return grid;
   }
+  grid = [...calSurroundingMines(grid)];
+  return (grid = [...openSurroundingCells(grid, cell)]);
 };

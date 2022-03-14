@@ -42,14 +42,18 @@ const Grid = () => {
       setCellDimension("25px");
     }
   };
-  const handleClick = (cell, e) => {
+  const handleClick = (cell) => {
     if (!grid[cell.posX][cell.posY].flagged) {
-      setGrid([...grid], (grid[cell.posX][cell.posY].isOpened = true));
+    //   setGrid([...grid], (grid[cell.posX][cell.posY].isOpened = true));
       if (firstClick) {
         setGrid([...openCell(grid, cell, firstClick)]);
         setFirstClick(false);
+        // console.log(grid);
       }
-
+      else{
+          setGrid([...openCell(grid,cell)]);
+      }
+      console.log(grid);
       // console.log(grid);
       //   if (firstClick && cell.value === "X") {
       //     let pos = clickCellFirstTime(grid, cell);
@@ -103,7 +107,7 @@ const Grid = () => {
                       ? row.map((col) => {
                           return (
                             <Cell
-                              onClick={(e) => handleClick(col, e)}
+                              onClick={(e) => handleClick(col)}
                               values={col}
                               onContextMenu={(e) => handleRightClick(col, e)}
                               styles={{
