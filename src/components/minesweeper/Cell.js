@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./minesweeper.css";
-
+import flag from "../../assets/minesweeper/flag_icon.png";
 const Cell = (props) => {
   const [bgc, setBgc] = useState("#a2d149");
   useEffect(() => {
@@ -53,7 +53,11 @@ const Cell = (props) => {
     >
       <div className="text-center">
         {/* {flag ? "F" : open ? props.values.value : ""} */}
-        {props.values.isOpened ? props.values.value : props.values.value}
+        {props.values.flagged ? (
+          <img src={flag} alt="flag" style={{width:props.styles.width}}/>
+        ) : (
+          props.values.value
+        )}
       </div>
     </div>
   );

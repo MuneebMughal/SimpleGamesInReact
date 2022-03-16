@@ -14,14 +14,26 @@
 }
 .gridHeader {
   background-color: #4a752c;
-  padding: 1rem;
+  padding: 0.5rem;
   width: 100%;
 }
-.heading{
-    padding-top: 2rem;
-    font-family: 'Dongle', sans-serif;
-    font-size: 3rem;
+.heading {
+  padding-top: 2rem;
+  font-family: "Dongle", sans-serif;
+  font-size: 3rem;
 }
-.cell:hover{
+.cell:hover {
   background-color: aqua;
+}
+.counter {
+  font-family: Roboto, Arial, sans-serif;
+  color: white;
+  width: 20%;
+  font-size: 20px;
+  padding-left: 3px;
+  height: 20px;
+  position: relative;
+  top: 0.2rem;
+  display: inline-block;
+  -webkit-user-select: none;
 }

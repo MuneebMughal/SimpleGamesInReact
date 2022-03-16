@@ -1,6 +1,8 @@
 import { makeGrid, checkWin, openCell } from "../../utils/minesweeper/makeGrid";
 import DIFFICULTY_LEVEL from "../../constants/minesweeper/constants";
 import { useEffect, useState } from "react";
+import Timer from "./Timer";
+import flag from "../../assets/minesweeper/flag_icon.png";
 import "./minesweeper.css";
 import React from "react";
 import Cell from "./Cell";
@@ -8,6 +10,7 @@ const Grid = () => {
   const [grid, setGrid] = useState([]);
   const [diff, setDiff] = useState(DIFFICULTY_LEVEL.EASY.name);
   const [firstClick, setFirstClick] = useState(true);
+  const [flags, setFlags] = useState(DIFFICULTY_LEVEL.EASY.mines);
   useEffect(() => {
     const getGrid = () => {
       const _grid = makeGrid(
@@ -19,6 +22,7 @@ const Grid = () => {
     };
     getGrid();
     setFirstClick(true);
+    setFlags(DIFFICULTY_LEVEL[diff].mines);
   }, [diff]);
   const handleChange = (e) => {
     setDiff(e.target.value);
@@ -26,14 +30,15 @@ const Grid = () => {
   };
   const handleClick = (cell) => {
     if (!grid[cell.posX][cell.posY].flagged) {
-      if (cell.value === "X") {
-        alert("You Losse!");
+      if (firstClick) {
+        setGrid([...openCell(grid, cell, firstClick)]);
+        setFirstClick(false);
+        setFlags(DIFFICULTY_LEVEL[diff].mines);
       } else {
-        if (firstClick) {
-          setGrid([...openCell(grid, cell, firstClick)]);
-          setFirstClick(false);
+        setGrid([...openCell(grid, cell)]);
+        if (cell.value === "X") {
+          alert("You Losse!");
         } else {
-          setGrid([...openCell(grid, cell)]);
           let win = checkWin(grid, DIFFICULTY_LEVEL[diff].mines);
           if (win) {
             alert("You Won!");
@@ -45,6 +50,11 @@ const Grid = () => {
   const handleRightClick = (cell, e) => {
     e.preventDefault();
     if (!grid[cell.posX][cell.posY].isOpened) {
+      if (!grid[cell.posX][cell.posY].flagged) {
+        setFlags(flags - 1);
+      } else {
+        setFlags(flags + 1);
+      }
       setGrid(
         [...grid],
         (grid[cell.posX][cell.posY].flagged =
@@ -64,17 +74,22 @@ const Grid = () => {
             <div>
               <select
                 onChange={(e) => {
-                  // setDiff(DIFFICULTY_LEVEL[e.target.value]);
                   handleChange(e);
                 }}
+                style={{ padding: "0.2rem", marginTop: "0.2rem" }}
               >
                 <option value={DIFFICULTY_LEVEL.EASY.name}>Easy</option>
                 <option value={DIFFICULTY_LEVEL.MEDIUM.name}>Medium</option>
                 <option value={DIFFICULTY_LEVEL.HARD.name}>Hard</option>
               </select>
             </div>
-            {/* <div class="p-2">Flex item 2</div>
-              <div class="p-2">Flex item 3</div> */}
+            <div>
+              <img src={flag} style={{ width: "38px" }} alt="Flag" />
+              <div className="counter">{flags}</div>
+            </div>
+            <div style={{ marginRight: "1rem" }}>
+              <Timer active={!firstClick} />
+            </div>
           </div>
         </div>
         <div

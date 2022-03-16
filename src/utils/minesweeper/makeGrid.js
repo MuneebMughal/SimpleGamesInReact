@@ -3,7 +3,7 @@ export const generateRandomNumber = (lowerLimit, upperLimit) => {
     Math.random() * (upperLimit - lowerLimit) - Math.random() * lowerLimit
   );
 };
-const makeMines = (grid,mines) => {
+const makeMines = (grid, mines) => {
   let createdMines = 0;
   let rows = grid.length;
   let cols = grid[0].length;
@@ -13,6 +13,16 @@ const makeMines = (grid,mines) => {
     if (grid[mineX][mineY].value === "B") {
       grid[mineX][mineY].value = "X";
       createdMines++;
+    }
+  }
+  return grid;
+};
+const makeFlaggedFalse = (grid) => {
+  let rows = grid.length;
+  let cols = grid[0].length;
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      grid[row][col].flagged = false;
     }
   }
   return grid;
@@ -80,7 +90,7 @@ const calSurroundingMines = (grid) => {
   }
   return grid;
 };
-export const makeGrid = (rows,cols,mines) => {
+export const makeGrid = (rows, cols, mines) => {
   let grid = [];
   let tog = false;
   let index = 0;
@@ -103,13 +113,13 @@ export const makeGrid = (rows,cols,mines) => {
     tog = !tog;
     grid[row] = subGrid;
   }
-  grid = makeMines(grid,mines);
+  grid = makeMines(grid, mines);
   return grid;
 };
 const openSurroundingCells = (grid, cell) => {
   let row = cell.posX;
   let col = cell.posY;
-  if (cell.value === 0 && cell.isOpened === false) {
+  if (cell.value === 0 && cell.isOpened === false && cell.flagged === false) {
     grid[row][col].isOpened = true;
     if (grid[row - 1] && grid[row - 1][col - 1]) {
       grid = [...openSurroundingCells(grid, grid[row - 1][col - 1])];
@@ -136,7 +146,9 @@ const openSurroundingCells = (grid, cell) => {
       grid = [...openSurroundingCells(grid, grid[row + 1][col + 1])];
     }
   } else {
-    grid[row][col].isOpened = true;
+    if (grid[row][col].flagged === false) {
+      grid[row][col].isOpened = true;
+    }
   }
   return grid;
 };
@@ -154,6 +166,7 @@ export const openCell = (grid, cell, firstClick = false) => {
         }
       } while (cell.value !== "B");
     }
+    grid = [...makeFlaggedFalse(grid)];
   }
   grid = [...calSurroundingMines(grid)];
   return (grid = [...openSurroundingCells(grid, cell)]);
@@ -169,9 +182,7 @@ export const checkWin = (grid, mines) => {
       }
     }
   }
-  if((openedCells+mines) === (rows*cols))
-  {
-      return true;
-  }
-  else return false
+  if (openedCells + mines === rows * cols) {
+    return true;
+  } else return false;
 };
