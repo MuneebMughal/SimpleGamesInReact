@@ -1,8 +1,4 @@
-import {
-  makeGrid,
-  clickCellFirstTime,
-  openCell,
-} from "../../utils/minesweeper/makeGrid";
+import { makeGrid, checkWin, openCell } from "../../utils/minesweeper/makeGrid";
 import DIFFICULTY_LEVEL from "../../constants/minesweeper/constants";
 import { useEffect, useState } from "react";
 import "./minesweeper.css";
@@ -10,60 +6,40 @@ import React from "react";
 import Cell from "./Cell";
 const Grid = () => {
   const [grid, setGrid] = useState([]);
-  const [diff, setDiff] = useState(DIFFICULTY_LEVEL.EASY);
-  const [height, setHeight] = useState("400px");
-  const [width, setWidth] = useState("500px");
-  const [cellDimension, setCellDimension] = useState("50px");
+  const [diff, setDiff] = useState(DIFFICULTY_LEVEL.EASY.name);
   const [firstClick, setFirstClick] = useState(true);
   useEffect(() => {
     const getGrid = () => {
-      const _grid = makeGrid(diff);
+      const _grid = makeGrid(
+        DIFFICULTY_LEVEL[diff].row,
+        DIFFICULTY_LEVEL[diff].col,
+        DIFFICULTY_LEVEL[diff].mines
+      );
       setGrid(_grid);
     };
     getGrid();
     setFirstClick(true);
-    // console.log('useEffect Diff call');
   }, [diff]);
   const handleChange = (e) => {
-    setDiff(DIFFICULTY_LEVEL[e.target.value]);
-    setGrid([]);
-    // console.log('Handle Difficulty Call');
-    if (e.target.value === "EASY") {
-      setHeight("400px");
-      setWidth("500px");
-      setCellDimension("50px");
-    } else if (e.target.value === "MEDIUM") {
-      setWidth("540px");
-      setHeight("420px");
-      setCellDimension("30px");
-    } else {
-      setWidth("600px");
-      setHeight("500px");
-      setCellDimension("25px");
-    }
+    setDiff(e.target.value);
+    setGrid([...[]]);
   };
   const handleClick = (cell) => {
     if (!grid[cell.posX][cell.posY].flagged) {
-    //   setGrid([...grid], (grid[cell.posX][cell.posY].isOpened = true));
-      if (firstClick) {
-        setGrid([...openCell(grid, cell, firstClick)]);
-        setFirstClick(false);
-        // console.log(grid);
+      if (cell.value === "X") {
+        alert("You Losse!");
+      } else {
+        if (firstClick) {
+          setGrid([...openCell(grid, cell, firstClick)]);
+          setFirstClick(false);
+        } else {
+          setGrid([...openCell(grid, cell)]);
+          let win = checkWin(grid, DIFFICULTY_LEVEL[diff].mines);
+          if (win) {
+            alert("You Won!");
+          }
+        }
       }
-      else{
-          setGrid([...openCell(grid,cell)]);
-      }
-      console.log(grid);
-      // console.log(grid);
-      //   if (firstClick && cell.value === "X") {
-      //     let pos = clickCellFirstTime(grid, cell);
-      //     setGrid(
-      //       [...grid],
-      //       (grid[pos.mineX][pos.mineY].value = "X"),
-      //       (grid[cell.posX][cell.posY].value = "B")
-      //     );
-      //     setFirstClick(false);
-      //   }
     }
   };
   const handleRightClick = (cell, e) => {
@@ -79,7 +55,10 @@ const Grid = () => {
   return (
     <div className="mainContainer">
       <h1 className="heading text-center">Minesweeper</h1>
-      <div className="boardContainer" style={{ width: width }}>
+      <div
+        className="boardContainer"
+        style={{ width: DIFFICULTY_LEVEL[diff].styles.width }}
+      >
         <div className="gridHeader">
           <div className="d-flex justify-content-between">
             <div>
@@ -89,16 +68,21 @@ const Grid = () => {
                   handleChange(e);
                 }}
               >
-                <option value="EASY">Easy</option>
-                <option value="MEDIUM">Medium</option>
-                <option value="HARD">Hard</option>
+                <option value={DIFFICULTY_LEVEL.EASY.name}>Easy</option>
+                <option value={DIFFICULTY_LEVEL.MEDIUM.name}>Medium</option>
+                <option value={DIFFICULTY_LEVEL.HARD.name}>Hard</option>
               </select>
             </div>
             {/* <div class="p-2">Flex item 2</div>
               <div class="p-2">Flex item 3</div> */}
           </div>
         </div>
-        <div style={{ height, width }}>
+        <div
+          style={{
+            height: DIFFICULTY_LEVEL[diff].styles.height,
+            width: DIFFICULTY_LEVEL[diff].styles.width,
+          }}
+        >
           {grid
             ? grid.map((row, index) => {
                 return (
@@ -111,8 +95,8 @@ const Grid = () => {
                               values={col}
                               onContextMenu={(e) => handleRightClick(col, e)}
                               styles={{
-                                height: cellDimension,
-                                width: cellDimension,
+                                height: DIFFICULTY_LEVEL[diff].cellDimension,
+                                width: DIFFICULTY_LEVEL[diff].cellDimension,
                               }}
                               key={col.key}
                             />

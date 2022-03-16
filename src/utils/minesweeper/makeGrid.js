@@ -3,11 +3,13 @@ export const generateRandomNumber = (lowerLimit, upperLimit) => {
     Math.random() * (upperLimit - lowerLimit) - Math.random() * lowerLimit
   );
 };
-const makeMines = (grid, diff) => {
+const makeMines = (grid,mines) => {
   let createdMines = 0;
-  while (createdMines !== diff.mines) {
-    let mineX = generateRandomNumber(0, diff.row);
-    let mineY = generateRandomNumber(0, diff.col);
+  let rows = grid.length;
+  let cols = grid[0].length;
+  while (createdMines !== mines) {
+    let mineX = generateRandomNumber(0, rows);
+    let mineY = generateRandomNumber(0, cols);
     if (grid[mineX][mineY].value === "B") {
       grid[mineX][mineY].value = "X";
       createdMines++;
@@ -17,7 +19,6 @@ const makeMines = (grid, diff) => {
 };
 const calSurroundingMines = (grid) => {
   if (grid) {
-    // console.log("Grid Consoling===>>", grid);
     let rows = grid.length;
     let cols = grid[0].length;
     for (let row = 0; row < rows; row++) {
@@ -79,13 +80,13 @@ const calSurroundingMines = (grid) => {
   }
   return grid;
 };
-export const makeGrid = (diff) => {
+export const makeGrid = (rows,cols,mines) => {
   let grid = [];
   let tog = false;
   let index = 0;
-  for (let row = 0; row < diff.row; row++) {
+  for (let row = 0; row < rows; row++) {
     let subGrid = [];
-    for (let col = 0; col < diff.col; col++) {
+    for (let col = 0; col < cols; col++) {
       tog = !tog;
       // Make blanck blocks Objects
       subGrid[col] = {
@@ -102,7 +103,7 @@ export const makeGrid = (diff) => {
     tog = !tog;
     grid[row] = subGrid;
   }
-  grid = makeMines(grid, diff);
+  grid = makeMines(grid,mines);
   return grid;
 };
 const openSurroundingCells = (grid, cell) => {
@@ -110,67 +111,28 @@ const openSurroundingCells = (grid, cell) => {
   let col = cell.posY;
   if (cell.value === 0 && cell.isOpened === false) {
     grid[row][col].isOpened = true;
-    if (
-      grid[row - 1] &&
-      grid[row - 1][col - 1] &&
-      grid[row - 1][col - 1].value === 0 &&
-      grid[row - 1][col - 1].isOpened === false
-    ) {
-      
+    if (grid[row - 1] && grid[row - 1][col - 1]) {
       grid = [...openSurroundingCells(grid, grid[row - 1][col - 1])];
     }
-    if (
-      grid[row - 1] &&
-      grid[row - 1][col] &&
-      grid[row - 1][col].value === 0 &&
-      grid[row - 1][col].isOpened === false
-    ) {
+    if (grid[row - 1] && grid[row - 1][col]) {
       grid = [...openSurroundingCells(grid, grid[row - 1][col])];
     }
-    if (
-      grid[row - 1] &&
-      grid[row - 1][col + 1] &&
-      grid[row - 1][col + 1].value === 0 &&
-      grid[row - 1][col + 1].isOpened === false
-    ) {
+    if (grid[row - 1] && grid[row - 1][col + 1]) {
       grid = [...openSurroundingCells(grid, grid[row - 1][col + 1])];
     }
-    if (
-      grid[row][col - 1] &&
-      grid[row][col - 1].value === 0 &&
-      grid[row][col - 1].isOpened === false
-    ) {
+    if (grid[row][col - 1]) {
       grid = [...openSurroundingCells(grid, grid[row][col - 1])];
     }
-    if (
-      grid[row][col + 1] &&
-      grid[row][col + 1].value === 0 &&
-      grid[row][col + 1].isOpened === false
-    ) {
+    if (grid[row][col + 1]) {
       grid = [...openSurroundingCells(grid, grid[row][col + 1])];
     }
-    if (
-      grid[row + 1] &&
-      grid[row + 1][col - 1] &&
-      grid[row + 1][col - 1].value === 0 &&
-      grid[row + 1][col - 1].isOpened === false
-    ) {
+    if (grid[row + 1] && grid[row + 1][col - 1]) {
       grid = [...openSurroundingCells(grid, grid[row + 1][col - 1])];
     }
-    if (
-      grid[row + 1] &&
-      grid[row + 1][col] &&
-      grid[row + 1][col].value === 0 &&
-      grid[row + 1][col].isOpened === false
-    ) {
+    if (grid[row + 1] && grid[row + 1][col]) {
       grid = [...openSurroundingCells(grid, grid[row + 1][col])];
     }
-    if (
-      grid[row + 1] &&
-      grid[row + 1][col + 1] &&
-      grid[row + 1][col + 1].value === 0 &&
-      grid[row + 1][col + 1].isOpened === false
-    ) {
+    if (grid[row + 1] && grid[row + 1][col + 1]) {
       grid = [...openSurroundingCells(grid, grid[row + 1][col + 1])];
     }
   } else {
@@ -195,4 +157,21 @@ export const openCell = (grid, cell, firstClick = false) => {
   }
   grid = [...calSurroundingMines(grid)];
   return (grid = [...openSurroundingCells(grid, cell)]);
+};
+export const checkWin = (grid, mines) => {
+  let rows = grid.length;
+  let cols = grid[0].length;
+  let openedCells = 0;
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (grid[row][col].isOpened === true) {
+        openedCells++;
+      }
+    }
+  }
+  if((openedCells+mines) === (rows*cols))
+  {
+      return true;
+  }
+  else return false
 };
