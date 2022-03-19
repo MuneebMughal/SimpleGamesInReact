@@ -9,8 +9,11 @@
 }
 
 .boardContainer {
-  padding-top: 2rem;
   margin: auto;
+  position: relative;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 .gridHeader {
   background-color: #4a752c;
@@ -21,9 +24,8 @@
   padding-top: 2rem;
   font-family: "Dongle", sans-serif;
   font-size: 3rem;
-}
-.cell:hover {
-  background-color: aqua;
+  padding-bottom: 2rem;
+  color: black;
 }
 .counter {
   font-family: Roboto, Arial, sans-serif;
@@ -35,5 +37,119 @@
   position: relative;
   top: 0.2rem;
   display: inline-block;
-  -webkit-user-select: none;
+}
+.modalBody {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: block;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.7);
+  transition: opacity 0.3s;
+}
+.timesButton {
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  color: white;
+  padding-right: 0.5rem;
+  cursor: pointer;
+}
+.stats {
+  background: #4dc1f9 url(../../assets/minesweeper/lose_screen.png) center
+    bottom no-repeat;
+  margin-top: 20% !important;
+  width: 300px;
+  height: 225px;
+  margin: auto;
+  border-radius: 8px;
+  text-align: center;
+  background-size: contain;
+}
+.tryAgain {
+  background: #4a752c;
+  width: 300px;
+  height: 64px;
+  margin: 12px auto;
+  border-radius: 8px;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+.refreshbtn {
+  vertical-align: middle;
+  margin: 0 16px 2px 0;
+  width: 30px;
+  height: 30px;
+}
+.btnheading {
+  font: 400 20px Roboto, Arial, sans-serif;
+  color: white;
+  padding: 0;
+  margin: 0;
+  margin-top: 20px;
+  display: inline-block;
+}
+.time {
+  display: inline-block;
+  margin-top: 25px;
+  margin-left: 36px;
+  margin-right: 36px;
+  text-align: center;
+}
+.statsImg {
+  width: 60px;
+  height: auto;
+}
+.score {
+  font: 400 28px Roboto, Arial, sans-serif;
+  color: white;
+}
+.skyblue {
+  color: #2f969d;
+  background-color: #48e6f1;
+}
+.green {
+  color: #01582d;
+  background-color: #028744;
+}
+.yellow {
+  color: #9f7f07;
+  background-color: #f4c20b;
+}
+.orange {
+  color: #a05609;
+  background-color: #f4840c;
+}
+.purple {
+  color: #762e9d;
+  background-color: #b648f2;
+}
+.blue {
+  color: #2e569a;
+  background-color: #4885ed;
+}
+.red {
+  color: #8e2123;
+  background-color: #db3236;
+}
+.pink {
+  color: #9a2c75;
+  background-color: #ed44b5;
+}
+.one{
+  color: #1876d1;
+}
+.two{
+  color:#398e3d;
+}
+.three{
+  color: #d32f2f;
+}
+.four{
+  color: #7b20a2;
 }

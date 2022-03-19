@@ -31,33 +31,56 @@ const Cell = (props) => {
     }
   };
   const handleRightClick = (e) => {
+    e.preventDefault();
     if (!props.values.isOpened) {
       props.onContextMenu(e);
     }
   };
   return (
     <div
-      className="cell"
-      onClick={(e) => handleClick(e)}
-      onContextMenu={(e) => handleRightClick(e)}
-      onMouseEnter={() => {
-        setBgc("#aaaaaa");
-      }}
-      onMouseLeave={() => {
-        setBackGroundColor();
-      }}
       style={{
-        ...props.styles,
-        backgroundColor: bgc,
+        position: "relative",
+        height: props.dimension + "px",
+        width: props.dimension + "px",
       }}
     >
-      <div className="text-center">
-        {/* {flag ? "F" : open ? props.values.value : ""} */}
-        {props.values.flagged ? (
-          <img src={flag} alt="flag" style={{width:props.styles.width}}/>
-        ) : (
-          props.values.value
-        )}
+      <div
+        onClick={(e) => handleClick(e)}
+        onContextMenu={(e) => handleRightClick(e)}
+        onMouseEnter={() => {
+          if (!props.values.isOpened) {
+            setBgc("#bfe17d");
+          } else if (props.values.isOpened && props.values.value !== 0) {
+            setBgc("#ebd1b7");
+          }
+        }}
+        onMouseLeave={() => {
+          setBackGroundColor();
+        }}
+        style={{
+          ...props.styles,
+          height: props.dimension + "px",
+          width: props.dimension + "px",
+          backgroundColor: bgc,
+        }}
+      >
+        <div className='text-center'>
+          {/* {flag ? "F" : open ? props.values.value : ""} */}
+          {props.values.flagged ? (
+            <img
+              src={flag}
+              alt="flag"
+              style={{
+                width: props.dimension - 6 + "px",
+                position: "absolute",
+                top: 3,
+                left: 3,
+              }}
+            />
+          ) : (
+            props.values.value
+          )}
+        </div>
       </div>
     </div>
   );

@@ -6,6 +6,7 @@ import flag from "../../assets/minesweeper/flag_icon.png";
 import "./minesweeper.css";
 import React from "react";
 import Cell from "./Cell";
+import Popup from "./Popup";
 const Grid = () => {
   const [grid, setGrid] = useState([]);
   const [diff, setDiff] = useState(DIFFICULTY_LEVEL.EASY.name);
@@ -35,10 +36,10 @@ const Grid = () => {
         setFirstClick(false);
         setFlags(DIFFICULTY_LEVEL[diff].mines);
       } else {
-        setGrid([...openCell(grid, cell)]);
         if (cell.value === "X") {
           alert("You Losse!");
         } else {
+          setGrid([...openCell(grid, cell)]);
           let win = checkWin(grid, DIFFICULTY_LEVEL[diff].mines);
           if (win) {
             alert("You Won!");
@@ -47,8 +48,7 @@ const Grid = () => {
       }
     }
   };
-  const handleRightClick = (cell, e) => {
-    e.preventDefault();
+  const handleRightClick = (cell) => {
     if (!grid[cell.posX][cell.posY].isOpened) {
       if (!grid[cell.posX][cell.posY].flagged) {
         setFlags(flags - 1);
@@ -62,6 +62,7 @@ const Grid = () => {
       );
     }
   };
+
   return (
     <div className="mainContainer">
       <h1 className="heading text-center">Minesweeper</h1>
@@ -106,13 +107,13 @@ const Grid = () => {
                       ? row.map((col) => {
                           return (
                             <Cell
-                              onClick={(e) => handleClick(col)}
+                              onClick={() => handleClick(col)}
                               values={col}
-                              onContextMenu={(e) => handleRightClick(col, e)}
+                              onContextMenu={() => handleRightClick(col)}
                               styles={{
-                                height: DIFFICULTY_LEVEL[diff].cellDimension,
-                                width: DIFFICULTY_LEVEL[diff].cellDimension,
+                                ...col.styles,
                               }}
+                              dimension={DIFFICULTY_LEVEL[diff].cellDimension}
                               key={col.key}
                             />
                           );
@@ -123,6 +124,7 @@ const Grid = () => {
               })
             : ""}
         </div>
+        {/* <Popup /> */}
       </div>
     </div>
   );

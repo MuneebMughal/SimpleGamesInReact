@@ -107,6 +107,7 @@ export const makeGrid = (rows, cols, mines) => {
         posY: col,
         toggle: tog,
         key: index,
+        styles: {},
       };
       index++;
     }
@@ -152,6 +153,78 @@ const openSurroundingCells = (grid, cell) => {
   }
   return grid;
 };
+const calSideBorder = (grid) => {
+  if (grid) {
+    let rows = grid.length;
+    let cols = grid[0].length;
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        if (
+          grid[row - 1] &&
+          grid[row - 1][col] &&
+          grid[row - 1][col].isOpened === true
+        ) {
+          if (!grid[row][col].isOpened) {
+            grid[row][col].styles = {
+              ...grid[row][col].styles,
+              borderTop: "3px solid rgb(138 175 62)",
+            };
+          } else {
+            grid[row][col].styles = {
+              ...grid[row][col].styles,
+              borderTop: "none",
+            };
+          }
+        }
+
+        if (grid[row][col - 1] && grid[row][col - 1].isOpened === true) {
+          if (!grid[row][col].isOpened) {
+            grid[row][col].styles = {
+              ...grid[row][col].styles,
+              borderLeft: "3px solid rgb(138 175 62)",
+            };
+          } else {
+            grid[row][col].styles = {
+              ...grid[row][col].styles,
+              borderLeft: "none",
+            };
+          }
+        }
+        if (grid[row][col + 1] && grid[row][col + 1].isOpened === true) {
+          if (!grid[row][col].isOpened) {
+            grid[row][col].styles = {
+              ...grid[row][col].styles,
+              borderRight: "3px solid rgb(138 175 62)",
+            };
+          } else {
+            grid[row][col].styles = {
+              ...grid[row][col].styles,
+              borderRight: "none",
+            };
+          }
+        }
+        if (
+          grid[row + 1] &&
+          grid[row + 1][col] &&
+          grid[row + 1][col].isOpened === true
+        ) {
+          if (!grid[row][col].isOpened) {
+            grid[row][col].styles = {
+              ...grid[row][col].styles,
+              borderBottom: "3px solid rgb(138 175 62)",
+            };
+          } else {
+            grid[row][col].styles = {
+              ...grid[row][col].styles,
+              borderBottom: "none",
+            };
+          }
+        }
+      }
+    }
+  }
+  return grid;
+};
 export const openCell = (grid, cell, firstClick = false) => {
   if (firstClick) {
     if (cell.value === "X") {
@@ -169,7 +242,8 @@ export const openCell = (grid, cell, firstClick = false) => {
     grid = [...makeFlaggedFalse(grid)];
   }
   grid = [...calSurroundingMines(grid)];
-  return (grid = [...openSurroundingCells(grid, cell)]);
+  grid = [...openSurroundingCells(grid, cell)];
+  return (grid = [...calSideBorder(grid)]);
 };
 export const checkWin = (grid, mines) => {
   let rows = grid.length;

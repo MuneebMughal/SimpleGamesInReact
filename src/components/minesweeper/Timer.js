@@ -15,7 +15,6 @@ const Timer = (props) => {
         setSeconds(0);
     }
   }, [seconds, props.active]);
-
   return (
     <div>
       <img src={clock} alt="clock" style={{ width: "38px" }} />
