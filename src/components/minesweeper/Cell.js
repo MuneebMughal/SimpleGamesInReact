@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DIFFICULTY_LEVEL from "../../constants/minesweeper/constants";
 import "./minesweeper.css";
 import flag from "../../assets/minesweeper/flag_icon.png";
 const Cell = (props) => {
@@ -64,7 +65,7 @@ const Cell = (props) => {
           backgroundColor: bgc,
         }}
       >
-        <div className='text-center'>
+        <div className="text-center">
           {/* {flag ? "F" : open ? props.values.value : ""} */}
           {props.values.flagged ? (
             <img
@@ -78,7 +79,31 @@ const Cell = (props) => {
               }}
             />
           ) : (
-            props.values.value
+            <div
+              className={
+                props.dimension === DIFFICULTY_LEVEL.EASY.cellDimension
+                  ? "mineValueEasy"
+                  : props.dimension === DIFFICULTY_LEVEL.MEDIUM.cellDimension
+                  ? "mineValueMedium"
+                  : "mineValueHard"
+              }
+            >
+              <div
+                className={
+                  props.values.value === 1
+                    ? "one"
+                    : props.values.value === 2
+                    ? "two"
+                    : props.values.value === 3
+                    ? "three"
+                    : props.values.value === 4
+                    ? "four"
+                    : "other"
+                }
+              >
+                {props.values.isOpened ? props.values.value !== 0 ? props.values.value : "" : ""}
+              </div>
+            </div>
           )}
         </div>
       </div>

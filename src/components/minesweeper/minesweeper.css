@@ -44,7 +44,6 @@
   width: 100%;
   top: 0;
   left: 0;
-  display: block;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.7);
   transition: opacity 0.3s;
@@ -109,6 +108,15 @@
   font: 400 28px Roboto, Arial, sans-serif;
   color: white;
 }
+.mineValueHard {
+  font: 600 20px Roboto, Arial, sans-serif;
+}
+.mineValueMedium {
+  font: 600 26px Roboto, Arial, sans-serif;
+}
+.mineValueEasy {
+  font: 600 38px Roboto, Arial, sans-serif;
+}
 .skyblue {
   color: #2f969d;
   background-color: #48e6f1;
@@ -141,15 +149,18 @@
   color: #9a2c75;
   background-color: #ed44b5;
 }
-.one{
+.one {
   color: #1876d1;
 }
-.two{
-  color:#398e3d;
+.two {
+  color: #398e3d;
 }
-.three{
+.three {
   color: #d32f2f;
 }
-.four{
+.four {
   color: #7b20a2;
+}
+.other {
+  color: #ff0000;
 }

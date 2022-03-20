@@ -12,6 +12,7 @@ const Grid = () => {
   const [diff, setDiff] = useState(DIFFICULTY_LEVEL.EASY.name);
   const [firstClick, setFirstClick] = useState(true);
   const [flags, setFlags] = useState(DIFFICULTY_LEVEL.EASY.mines);
+  const [game, setGame] = useState();
   useEffect(() => {
     const getGrid = () => {
       const _grid = makeGrid(
@@ -24,6 +25,7 @@ const Grid = () => {
     getGrid();
     setFirstClick(true);
     setFlags(DIFFICULTY_LEVEL[diff].mines);
+    setGame();
   }, [diff]);
   const handleChange = (e) => {
     setDiff(e.target.value);
@@ -37,16 +39,30 @@ const Grid = () => {
         setFlags(DIFFICULTY_LEVEL[diff].mines);
       } else {
         if (cell.value === "X") {
-          alert("You Losse!");
+          setGame(false);
         } else {
           setGrid([...openCell(grid, cell)]);
           let win = checkWin(grid, DIFFICULTY_LEVEL[diff].mines);
           if (win) {
-            alert("You Won!");
+            setGame(true);
           }
         }
       }
     }
+  };
+  const Reset = () => {
+    const getGrid = () => {
+      const _grid = makeGrid(
+        DIFFICULTY_LEVEL[diff].row,
+        DIFFICULTY_LEVEL[diff].col,
+        DIFFICULTY_LEVEL[diff].mines
+      );
+      setGrid(_grid);
+    };
+    getGrid();
+    setFirstClick(true);
+    setFlags(DIFFICULTY_LEVEL[diff].mines);
+    setGame();
   };
   const handleRightClick = (cell) => {
     if (!grid[cell.posX][cell.posY].isOpened) {
@@ -62,7 +78,6 @@ const Grid = () => {
       );
     }
   };
-
   return (
     <div className="mainContainer">
       <h1 className="heading text-center">Minesweeper</h1>
@@ -89,7 +104,7 @@ const Grid = () => {
               <div className="counter">{flags}</div>
             </div>
             <div style={{ marginRight: "1rem" }}>
-              <Timer active={!firstClick} />
+              <Timer active={!firstClick} game={game} diff={diff} />
             </div>
           </div>
         </div>
@@ -124,7 +139,7 @@ const Grid = () => {
               })
             : ""}
         </div>
-        {/* <Popup /> */}
+        <Popup game={game} diff={diff} onClick={Reset} />
       </div>
     </div>
   );
