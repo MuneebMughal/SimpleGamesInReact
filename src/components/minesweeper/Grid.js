@@ -14,18 +14,7 @@ const Grid = () => {
   const [flags, setFlags] = useState(DIFFICULTY_LEVEL.EASY.mines);
   const [game, setGame] = useState();
   useEffect(() => {
-    const getGrid = () => {
-      const _grid = makeGrid(
-        DIFFICULTY_LEVEL[diff].row,
-        DIFFICULTY_LEVEL[diff].col,
-        DIFFICULTY_LEVEL[diff].mines
-      );
-      setGrid(_grid);
-    };
-    getGrid();
-    setFirstClick(true);
-    setFlags(DIFFICULTY_LEVEL[diff].mines);
-    setGame();
+    Reset();
   }, [diff]);
   const handleChange = (e) => {
     setDiff(e.target.value);
