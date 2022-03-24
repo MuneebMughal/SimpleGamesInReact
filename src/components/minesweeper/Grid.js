@@ -7,6 +7,7 @@ import "./minesweeper.css";
 import React from "react";
 import Cell from "./Cell";
 import Popup from "./Popup";
+import refresh from '../../assets/minesweeper/refresh_white_24dp.png'
 const Grid = () => {
   const [grid, setGrid] = useState([]);
   const [diff, setDiff] = useState(DIFFICULTY_LEVEL.EASY.name);
@@ -88,12 +89,18 @@ const Grid = () => {
                 <option value={DIFFICULTY_LEVEL.HARD.name}>Hard</option>
               </select>
             </div>
-            <div>
-              <img src={flag} style={{ width: "38px" }} alt="Flag" />
-              <div className="counter">{flags}</div>
+            <div className='d-flex justify-content-between'>
+              
+              <div style={{marginRight:'1rem'}}>
+                <img src={flag} style={{ width: "38px" }} alt="Flag" />
+                <div className="counter">{flags}</div>
+              </div>
+              <div >
+                <Timer active={!firstClick} game={game} diff={diff} />
+              </div>
             </div>
-            <div style={{ marginRight: "1rem" }}>
-              <Timer active={!firstClick} game={game} diff={diff} />
+            <div style={{ marginRight: "1rem" ,cursor:'pointer'}} onClick={Reset}>
+            <img src={refresh} alt="Refresh" style={{width:'38px' }} />
             </div>
           </div>
         </div>

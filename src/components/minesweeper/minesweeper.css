@@ -21,6 +21,7 @@
   width: 100%;
 }
 .heading {
+  margin: 0px;
   padding-top: 2rem;
   font-family: "Dongle", sans-serif;
   font-size: 3rem;
