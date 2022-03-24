@@ -37,6 +37,76 @@ const Cell = (props) => {
       props.onContextMenu(e);
     }
   };
+  const renderNonMinedCells = () => {
+    return (
+      <div className="text-center">
+        {props.values.flagged ? (
+          <img
+            src={flag}
+            alt="flag"
+            style={{
+              width: props.dimension - 6 + "px",
+              position: "absolute",
+              top: 3,
+              left: 3,
+            }}
+          />
+        ) : (
+          <div
+            className={
+              props.dimension === DIFFICULTY_LEVEL.EASY.cellDimension
+                ? "mineValueEasy"
+                : props.dimension === DIFFICULTY_LEVEL.MEDIUM.cellDimension
+                ? "mineValueMedium"
+                : "mineValueHard"
+            }
+          >
+            <div
+              className={
+                props.values.value === 1
+                  ? "one"
+                  : props.values.value === 2
+                  ? "two"
+                  : props.values.value === 3
+                  ? "three"
+                  : props.values.value === 4
+                  ? "four"
+                  : "other"
+              }
+            >
+              {props.values.isOpened
+                ? props.values.value !== 0
+                  ? props.values.value
+                  : ""
+                : ""}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+  const renderMinedCells = () => {
+    return (
+      <>
+        {props.values.flagged && props.values.value !== "X" ? (
+          <div
+            className={
+              props.dimension === DIFFICULTY_LEVEL.EASY.cellDimension
+                ? "mineValueEasy"
+                : props.dimension === DIFFICULTY_LEVEL.MEDIUM.cellDimension
+                ? "mineValueMedium"
+                : "mineValueHard"
+            }
+          >
+            <div className="other text-center">X</div>
+          </div>
+        ) : (
+          "X"
+        )}
+      </>
+    );
+  };
+
   return (
     <div
       style={{
@@ -60,52 +130,26 @@ const Cell = (props) => {
         }}
         style={{
           ...props.styles,
-          height: props.dimension + "px",
-          width: props.dimension + "px",
+          height: "100%",
+          width: "100%",
           backgroundColor: bgc,
         }}
       >
-        <div className="text-center">
-          {/* {flag ? "F" : open ? props.values.value : ""} */}
-          {props.values.flagged ? (
-            <img
-              src={flag}
-              alt="flag"
-              style={{
-                width: props.dimension - 6 + "px",
-                position: "absolute",
-                top: 3,
-                left: 3,
-              }}
-            />
-          ) : (
-            <div
-              className={
-                props.dimension === DIFFICULTY_LEVEL.EASY.cellDimension
-                  ? "mineValueEasy"
-                  : props.dimension === DIFFICULTY_LEVEL.MEDIUM.cellDimension
-                  ? "mineValueMedium"
-                  : "mineValueHard"
-              }
-            >
-              <div
-                className={
-                  props.values.value === 1
-                    ? "one"
-                    : props.values.value === 2
-                    ? "two"
-                    : props.values.value === 3
-                    ? "three"
-                    : props.values.value === 4
-                    ? "four"
-                    : "other"
-                }
-              >
-                {props.values.isOpened ? props.values.value !== 0 ? props.values.value : "" : ""}
-              </div>
-            </div>
-          )}
-        </div>
+        {!props.values.isOpened && !props.values.flagged
+          ? !props.showMines
+            ? renderNonMinedCells()
+            : props.values.value !== "X"
+            ? renderNonMinedCells()
+            : renderMinedCells()
+          : props.values.isOpened
+          ? renderNonMinedCells()
+          : props.values.flagged
+          ? !props.showMines
+            ? renderNonMinedCells()
+            : props.values.value === "X"
+            ? renderNonMinedCells()
+            : renderMinedCells()
+          : renderMinedCells()}
       </div>
     </div>
   );

@@ -7,13 +7,24 @@ import "./minesweeper.css";
 import React from "react";
 import Cell from "./Cell";
 import Popup from "./Popup";
-import refresh from '../../assets/minesweeper/refresh_white_24dp.png'
+import refresh from "../../assets/minesweeper/refresh_white_24dp.png";
 const Grid = () => {
   const [grid, setGrid] = useState([]);
   const [diff, setDiff] = useState(DIFFICULTY_LEVEL.EASY.name);
-  const [firstClick, setFirstClick] = useState(true);
+  const [start, setStart] = useState(true);
   const [flags, setFlags] = useState(DIFFICULTY_LEVEL.EASY.mines);
   const [game, setGame] = useState();
+  const [showPopup, setShow] = useState(false);
+  const [showMines, setShowMines] = useState();
+  useEffect(() => {
+    let interval = null;
+    if (showMines === true) {
+      interval = setInterval(() => {
+        setShow(true);
+      }, 5000);
+    }
+    return () => clearInterval(interval);
+  }, [showMines]);
   useEffect(() => {
     Reset();
   }, [diff]);
@@ -22,19 +33,24 @@ const Grid = () => {
     setGrid([...[]]);
   };
   const handleClick = (cell) => {
-    if (!grid[cell.posX][cell.posY].flagged) {
-      if (firstClick) {
-        setGrid([...openCell(grid, cell, firstClick)]);
-        setFirstClick(false);
-        setFlags(DIFFICULTY_LEVEL[diff].mines);
-      } else {
-        if (cell.value === "X") {
-          setGame(false);
+    if (!showMines) {
+      if (!grid[cell.posX][cell.posY].flagged) {
+        if (start) {
+          setGrid([...openCell(grid, cell, start)]);
+          setStart(false);
+          setFlags(DIFFICULTY_LEVEL[diff].mines);
         } else {
-          setGrid([...openCell(grid, cell)]);
-          let win = checkWin(grid, DIFFICULTY_LEVEL[diff].mines);
-          if (win) {
-            setGame(true);
+          if (cell.value === "X") {
+            setGame(false);
+            setGrid([...grid], (grid[cell.posX][cell.posY].clicked = true));
+            setShowMines(true);
+          } else {
+            setGrid([...openCell(grid, cell)]);
+            let win = checkWin(grid, DIFFICULTY_LEVEL[diff].mines);
+            if (win) {
+              setGame(true);
+              setShow(true);
+            }
           }
         }
       }
@@ -50,22 +66,26 @@ const Grid = () => {
       setGrid(_grid);
     };
     getGrid();
-    setFirstClick(true);
+    setStart(true);
     setFlags(DIFFICULTY_LEVEL[diff].mines);
     setGame();
+    setShowMines();
+    setShow(false);
   };
   const handleRightClick = (cell) => {
-    if (!grid[cell.posX][cell.posY].isOpened) {
-      if (!grid[cell.posX][cell.posY].flagged) {
-        setFlags(flags - 1);
-      } else {
-        setFlags(flags + 1);
+    if (!showMines) {
+      if (!grid[cell.posX][cell.posY].isOpened) {
+        if (!grid[cell.posX][cell.posY].flagged) {
+          setFlags(flags - 1);
+        } else {
+          setFlags(flags + 1);
+        }
+        setGrid(
+          [...grid],
+          (grid[cell.posX][cell.posY].flagged =
+            !grid[cell.posX][cell.posY].flagged)
+        );
       }
-      setGrid(
-        [...grid],
-        (grid[cell.posX][cell.posY].flagged =
-          !grid[cell.posX][cell.posY].flagged)
-      );
     }
   };
   return (
@@ -89,18 +109,20 @@ const Grid = () => {
                 <option value={DIFFICULTY_LEVEL.HARD.name}>Hard</option>
               </select>
             </div>
-            <div className='d-flex justify-content-between'>
-              
-              <div style={{marginRight:'1rem'}}>
+            <div className="d-flex">
+              <div style={{ marginRight: "1rem" }}>
                 <img src={flag} style={{ width: "38px" }} alt="Flag" />
                 <div className="counter">{flags}</div>
               </div>
-              <div >
-                <Timer active={!firstClick} game={game} diff={diff} />
+              <div>
+                <Timer active={!start} game={game} diff={diff} />
               </div>
             </div>
-            <div style={{ marginRight: "1rem" ,cursor:'pointer'}} onClick={Reset}>
-            <img src={refresh} alt="Refresh" style={{width:'38px' }} />
+            <div
+              style={{ marginRight: "1rem", cursor: "pointer" }}
+              onClick={Reset}
+            >
+              <img src={refresh} alt="Refresh" style={{ width: "38px" }} />
             </div>
           </div>
         </div>
@@ -126,6 +148,7 @@ const Grid = () => {
                               }}
                               dimension={DIFFICULTY_LEVEL[diff].cellDimension}
                               key={col.key}
+                              showMines={showMines}
                             />
                           );
                         })
@@ -135,7 +158,7 @@ const Grid = () => {
               })
             : ""}
         </div>
-        <Popup game={game} diff={diff} onClick={Reset} />
+        <Popup game={game} diff={diff} onClick={Reset} show={showPopup} />
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ const Popup = (props) => {
   const hs=useRef(0); 
   const curS=useRef(0);
   useEffect(() => {
-    if (props.game === false || props.game === true) {
+    if (props.show === true) {
       setShow(true);
       if (props.game === true) {
         if (props.diff === DIFFICULTY_LEVEL.EASY.name) {
@@ -21,7 +21,7 @@ const Popup = (props) => {
         curS.current = window.localStorage.getItem("curScore");
       }
     } else setShow(false);
-  }, [props.game]);
+  }, [props.game,props.show]);
   return (
     <div
       className="modalBody"
