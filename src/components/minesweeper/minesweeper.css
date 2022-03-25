@@ -1,11 +1,14 @@
 .mainContainer {
   min-height: 100vh;
   width: 100vw;
-  background-image: linear-gradient(
+  /* background-image: linear-gradient(
     117deg,
     rgba(123, 216, 96, 1) 39.2%,
     rgba(255, 255, 255, 1) 156.2%
-  );
+  ); */
+  background-color: #000000;
+background-image: linear-gradient(45deg, #000000 0%, #b1f18d 100%);
+
 }
 
 .boardContainer {
@@ -26,7 +29,7 @@
   font-family: "Dongle", sans-serif;
   font-size: 3rem;
   padding-bottom: 2rem;
-  color: black;
+  color: #ffffff;
 }
 .counter {
   font-family: Roboto, Arial, sans-serif;
