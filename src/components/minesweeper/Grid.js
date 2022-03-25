@@ -1,4 +1,4 @@
-import { makeGrid, checkWin, openCell } from "../../utils/minesweeper/makeGrid";
+import { makeGrid, checkWin, openCell } from "../../utils/minesweeper/utils";
 import DIFFICULTY_LEVEL from "../../constants/minesweeper/constants";
 import { useEffect, useState } from "react";
 import Timer from "./Timer";
@@ -14,14 +14,13 @@ const Grid = () => {
   const [start, setStart] = useState(true);
   const [flags, setFlags] = useState(DIFFICULTY_LEVEL.EASY.mines);
   const [game, setGame] = useState();
-  const [showPopup, setShow] = useState(false);
-  const [showMines, setShowMines] = useState();
+  const [showMines, setShowMines] = useState(false);
   useEffect(() => {
     let interval = null;
     if (showMines === true) {
       interval = setInterval(() => {
-        setShow(true);
-      }, 5000);
+        setGame(false);
+      }, DIFFICULTY_LEVEL[diff].animTime * 1000);
     }
     return () => clearInterval(interval);
   }, [showMines]);
@@ -41,7 +40,6 @@ const Grid = () => {
           setFlags(DIFFICULTY_LEVEL[diff].mines);
         } else {
           if (cell.value === "X") {
-            setGame(false);
             setGrid([...grid], (grid[cell.posX][cell.posY].clicked = true));
             setShowMines(true);
           } else {
@@ -49,17 +47,12 @@ const Grid = () => {
             let win = checkWin(grid, DIFFICULTY_LEVEL[diff].mines);
             if (win) {
               setGame(true);
-              setShow(true);
             }
           }
         }
       }
     }
   };
-  // if(showMines)
-  // {
-  //   console.log(grid);
-  // }
   const Reset = () => {
     const getGrid = () => {
       const _grid = makeGrid(
@@ -74,7 +67,6 @@ const Grid = () => {
     setFlags(DIFFICULTY_LEVEL[diff].mines);
     setGame();
     setShowMines();
-    setShow(false);
   };
   const handleRightClick = (cell) => {
     if (!showMines) {
@@ -119,7 +111,12 @@ const Grid = () => {
                 <div className="counter">{flags}</div>
               </div>
               <div>
-                <Timer active={!start} game={game} diff={diff} />
+                <Timer
+                  active={!start}
+                  game={game}
+                  diff={diff}
+                  showMines={showMines}
+                />
               </div>
             </div>
             <div
@@ -153,6 +150,7 @@ const Grid = () => {
                               dimension={DIFFICULTY_LEVEL[diff].cellDimension}
                               key={col.key}
                               showMines={showMines}
+                              diff={diff}
                             />
                           );
                         })
@@ -162,7 +160,7 @@ const Grid = () => {
               })
             : ""}
         </div>
-        <Popup game={game} diff={diff} onClick={Reset} show={showPopup} />
+        <Popup game={game} diff={diff} onClick={Reset} />
       </div>
     </div>
   );

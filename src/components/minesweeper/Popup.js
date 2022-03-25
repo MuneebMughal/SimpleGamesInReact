@@ -1,14 +1,14 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import refresh from "../../assets/minesweeper/refresh_white_24dp.png";
 import clock from "../../assets/minesweeper/clock_icon.png";
 import trophy from "../../assets/minesweeper/trophy_icon.png";
 import DIFFICULTY_LEVEL from "../../constants/minesweeper/constants";
 const Popup = (props) => {
   const [show, setShow] = useState(false);
-  const hs=useRef(0); 
-  const curS=useRef(0);
+  const hs = useRef(0);
+  const curS = useRef(0);
   useEffect(() => {
-    if (props.show === true) {
+    if (props.game === true || props.game === false) {
       setShow(true);
       if (props.game === true) {
         if (props.diff === DIFFICULTY_LEVEL.EASY.name) {
@@ -21,7 +21,7 @@ const Popup = (props) => {
         curS.current = window.localStorage.getItem("curScore");
       }
     } else setShow(false);
-  }, [props.game,props.show]);
+  }, [props.game]);
   return (
     <div
       className="modalBody"
@@ -33,11 +33,15 @@ const Popup = (props) => {
       <div className="stats">
         <div className="time">
           <img src={clock} alt="Clock" className="statsImg" />
-          <div className="score">{props.game === true ?  curS.current  : "–––"}</div>
+          <div className="score">
+            {props.game === true ? curS.current : "–––"}
+          </div>
         </div>
         <div className="time">
           <img src={trophy} alt="Clock" className="statsImg" />
-          <div className="score">{props.game === true ?  hs.current  : "–––"}</div>
+          <div className="score">
+            {props.game === true ? hs.current : "–––"}
+          </div>
         </div>
       </div>
       <div className="tryAgain" onClick={props.onClick}>

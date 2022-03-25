@@ -10,7 +10,7 @@ const Timer = (props) => {
       props.active &&
       seconds < 999 &&
       props.game !== true &&
-      props.game !== false
+      props.showMines !== true
     ) {
       interval = setInterval(() => {
         setSeconds(seconds + 1);
@@ -19,7 +19,7 @@ const Timer = (props) => {
       setSeconds(0);
     }
     return () => clearInterval(interval);
-  }, [seconds, props.active, props.game]);
+  }, [seconds, props.active, props.game,props.showMines]);
   useEffect(() => {
     if (props.game === true) {
       window.localStorage.setItem("curScore", seconds);

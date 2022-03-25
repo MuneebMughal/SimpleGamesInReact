@@ -7,52 +7,30 @@ const Cell = (props) => {
   const [open, setOpen] = useState(false);
   const opentime = useRef(0);
   const openClass = useRef(0);
-  function generateRandom(min = 0, max = 100) {
-    // find diff
+  function generateRandom(min, max) {
     let difference = max - min;
-
-    // generate random number
     let rand = Math.random();
-
-    // multiply with difference
     rand = Math.floor(rand * difference);
-
-    // add with min value
     rand = rand + min;
-
     return rand;
   }
   useEffect(() => {
     let interval = null;
     if (props.showMines === true && props.values.value === "X") {
-      console.log("useEffect Called");
       if (!props.values.clicked) {
-        opentime.current = generateRandom(1, 5);
+        opentime.current = generateRandom(1, DIFFICULTY_LEVEL[props.diff].animTime);
       }
       openClass.current = generateRandom(1, 9);
       interval = setInterval(() => {
         setOpen(true);
       }, opentime.current * 1000);
-      console.log(
-        "openTime==>>",
-        opentime.current,
-        "openClass==>>",
-        openClass.current
-      );
+    } else if (props.showMines === false) {
+      setOpen(false);
     }
-
     return () => {
       clearInterval(interval);
     };
   }, [props.showMines]);
-  useEffect(() => {
-    if (open === true) {
-      console.log("rendered");
-    }
-    if (props.showMines === true) {
-      console.log("renderedSS");
-    }
-  }, [open]);
   useEffect(() => {
     if (props.values.toggle && !props.values.isOpened) {
       setBgc("#aad752");
@@ -91,14 +69,18 @@ const Cell = (props) => {
       <div
         className="text-center"
         onMouseEnter={() => {
-          if (!props.values.isOpened) {
-            setBgc("#bfe17d");
-          } else if (props.values.isOpened && props.values.value !== 0) {
-            setBgc("#ebd1b7");
+          if (!props.showMines) {
+            if (!props.values.isOpened) {
+              setBgc("#bfe17d");
+            } else if (props.values.isOpened && props.values.value !== 0) {
+              setBgc("#ebd1b7");
+            }
           }
         }}
         onMouseLeave={() => {
-          setBackGroundColor();
+          if (!props.showMines) {
+            setBackGroundColor();
+          }
         }}
       >
         {props.values.flagged ? (
@@ -162,7 +144,7 @@ const Cell = (props) => {
             <div className="other text-center">X</div>
           </div>
         ) : open ? (
-          <div className={`cellBg${openClass.current} mineCell`} >
+          <div className={`cellBg${openClass.current} mineCell`}>
             <div className={`mineBg${openClass.current} mine`}></div>
           </div>
         ) : (

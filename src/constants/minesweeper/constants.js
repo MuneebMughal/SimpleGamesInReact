@@ -6,6 +6,7 @@ const DIFFICULTY_LEVEL = {
     mines: 10,
     styles: { height: "400px", width: "500px" },
     cellDimension: "50",
+    animTime: 10,
   },
   MEDIUM: {
     name: "MEDIUM",
@@ -14,6 +15,7 @@ const DIFFICULTY_LEVEL = {
     mines: 40,
     styles: { height: "420px", width: "540px" },
     cellDimension: "30",
+    animTime: 15,
   },
   HARD: {
     name: "HARD",
@@ -22,6 +24,7 @@ const DIFFICULTY_LEVEL = {
     mines: 99,
     styles: { height: "500px", width: "600px" },
     cellDimension: "25",
+    animTime: 20,
   },
 };
 export default DIFFICULTY_LEVEL;
