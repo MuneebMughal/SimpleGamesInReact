@@ -56,6 +56,10 @@ const Grid = () => {
       }
     }
   };
+  // if(showMines)
+  // {
+  //   console.log(grid);
+  // }
   const Reset = () => {
     const getGrid = () => {
       const _grid = makeGrid(

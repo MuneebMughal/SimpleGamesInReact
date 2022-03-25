@@ -118,37 +118,148 @@
 .mineValueEasy {
   font: 600 38px Roboto, Arial, sans-serif;
 }
-.skyblue {
-  color: #2f969d;
-  background-color: #48e6f1;
+
+.cellBg1 {
+  animation: changecellbg1 0.5s ease forwards;
 }
-.green {
-  color: #01582d;
-  background-color: #028744;
+@keyframes changecellbg1 {
+  100% {
+    background-color: #48e6f1;
+  }
 }
-.yellow {
-  color: #9f7f07;
-  background-color: #f4c20b;
+.mineBg1 {
+  animation: changeminebg1 0.5s ease forwards;
 }
-.orange {
-  color: #a05609;
-  background-color: #f4840c;
+@keyframes changeminebg1 {
+  100% {
+    background-color: #2f969d;
+  }
 }
-.purple {
-  color: #762e9d;
-  background-color: #b648f2;
+.cellBg2 {
+  animation: changecellbg2 0.5s ease forwards;
 }
-.blue {
-  color: #2e569a;
-  background-color: #4885ed;
+@keyframes changecellbg2 {
+  100% {
+    background-color: #028744;
+  }
 }
-.red {
-  color: #8e2123;
-  background-color: #db3236;
+.mineBg2 {
+  animation: changeminebg2 0.5s ease forwards;
 }
-.pink {
-  color: #9a2c75;
-  background-color: #ed44b5;
+@keyframes changeminebg2 {
+  100% {
+    background-color: #01582d;
+  }
+}
+.cellBg3 {
+  animation: changecellbg3 0.5s ease forwards;
+}
+@keyframes changecellbg3 {
+  100% {
+    background-color: #f4c20b;
+  }
+}
+.mineBg3 {
+  animation: changeminebg3 0.5s ease forwards;
+}
+@keyframes changeminebg3 {
+  100% {
+    background-color: #9f7f07;
+  }
+}
+.cellBg4 {
+  animation: changecellbg4 0.5s ease forwards;
+}
+@keyframes changecellbg4 {
+  100% {
+    background-color: #f4840c;
+  }
+}
+.mineBg4 {
+  animation: changeminebg4 0.5s ease forwards;
+}
+@keyframes changeminebg4 {
+  100% {
+    background-color: #a05609;
+  }
+}
+.cellBg5 {
+  animation: changecellbg5 0.5s ease forwards;
+}
+@keyframes changecellbg5 {
+  100% {
+    background-color: #b648f2;
+  }
+}
+.mineBg5 {
+  animation: changeminebg5 0.5s ease forwards;
+}
+@keyframes changeminebg5 {
+  100% {
+    background-color: #762e9d;
+  }
+}
+.cellBg6 {
+  animation: changecellbg6 0.5s ease forwards;
+}
+@keyframes changecellbg6 {
+  100% {
+    background-color: #4885ed;
+  }
+}
+.mineBg6 {
+  animation: changeminebg6 0.5s ease forwards;
+}
+@keyframes changeminebg6 {
+  100% {
+    background-color: #2e569a;
+  }
+}
+.cellBg7 {
+  animation: changecellbg7 0.5s ease forwards;
+}
+@keyframes changecellbg7 {
+  100% {
+    background-color: #db3236;
+  }
+}
+.mineBg7 {
+  animation: changeminebg7 0.5s ease forwards;
+}
+@keyframes changeminebg7 {
+  100% {
+    background-color: #8e2123;
+  }
+}
+.cellBg8 {
+  animation: changecellbg8 0.5s ease forwards;
+}
+@keyframes changecellbg8 {
+  100% {
+    background-color: #ed44b5;
+  }
+}
+.mineBg8 {
+  animation: changeminebg8 0.5s ease forwards;
+}
+@keyframes changeminebg8 {
+  100% {
+    background-color: #9a2c75;
+  }
+}
+
+.mineCell {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mine {
+  height: 60%;
+  width: 60%;
+  border-radius: 50%;
+  position: absolute;
 }
 .one {
   color: #1876d1;

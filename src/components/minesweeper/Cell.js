@@ -1,9 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DIFFICULTY_LEVEL from "../../constants/minesweeper/constants";
 import "./minesweeper.css";
 import flag from "../../assets/minesweeper/flag_icon.png";
 const Cell = (props) => {
   const [bgc, setBgc] = useState("#a2d149");
+  const [open, setOpen] = useState(false);
+  const opentime = useRef(0);
+  const openClass = useRef(0);
+  function generateRandom(min = 0, max = 100) {
+    // find diff
+    let difference = max - min;
+
+    // generate random number
+    let rand = Math.random();
+
+    // multiply with difference
+    rand = Math.floor(rand * difference);
+
+    // add with min value
+    rand = rand + min;
+
+    return rand;
+  }
+  useEffect(() => {
+    let interval = null;
+    if (props.showMines === true && props.values.value === "X") {
+      console.log("useEffect Called");
+      if (!props.values.clicked) {
+        opentime.current = generateRandom(1, 5);
+      }
+      openClass.current = generateRandom(1, 9);
+      interval = setInterval(() => {
+        setOpen(true);
+      }, opentime.current * 1000);
+      console.log(
+        "openTime==>>",
+        opentime.current,
+        "openClass==>>",
+        openClass.current
+      );
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [props.showMines]);
+  useEffect(() => {
+    if (open === true) {
+      console.log("rendered");
+    }
+    if (props.showMines === true) {
+      console.log("renderedSS");
+    }
+  }, [open]);
   useEffect(() => {
     if (props.values.toggle && !props.values.isOpened) {
       setBgc("#aad752");
@@ -39,7 +88,19 @@ const Cell = (props) => {
   };
   const renderNonMinedCells = () => {
     return (
-      <div className="text-center">
+      <div
+        className="text-center"
+        onMouseEnter={() => {
+          if (!props.values.isOpened) {
+            setBgc("#bfe17d");
+          } else if (props.values.isOpened && props.values.value !== 0) {
+            setBgc("#ebd1b7");
+          }
+        }}
+        onMouseLeave={() => {
+          setBackGroundColor();
+        }}
+      >
         {props.values.flagged ? (
           <img
             src={flag}
@@ -100,8 +161,12 @@ const Cell = (props) => {
           >
             <div className="other text-center">X</div>
           </div>
+        ) : open ? (
+          <div className={`cellBg${openClass.current} mineCell`} >
+            <div className={`mineBg${openClass.current} mine`}></div>
+          </div>
         ) : (
-          "X"
+          ""
         )}
       </>
     );
@@ -118,16 +183,6 @@ const Cell = (props) => {
       <div
         onClick={(e) => handleClick(e)}
         onContextMenu={(e) => handleRightClick(e)}
-        onMouseEnter={() => {
-          if (!props.values.isOpened) {
-            setBgc("#bfe17d");
-          } else if (props.values.isOpened && props.values.value !== 0) {
-            setBgc("#ebd1b7");
-          }
-        }}
-        onMouseLeave={() => {
-          setBackGroundColor();
-        }}
         style={{
           ...props.styles,
           height: "100%",
