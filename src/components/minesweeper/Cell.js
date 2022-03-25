@@ -15,6 +15,11 @@ const Cell = (props) => {
     return rand;
   }
   useEffect(() => {
+    if (props.showMines === false) {
+      opentime.current = 0;
+    }
+  }, [props.showMines]);
+  useEffect(() => {
     let interval = null;
     if (props.showMines === true && props.values.value === "X") {
       if (!props.values.clicked) {
