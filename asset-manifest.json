@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/SimpleGamesInReact/static/css/main.b244adcc.css",
+    "main.css": "/SimpleGamesInReact/static/css/main.a2092627.css",
     "main.js": "/SimpleGamesInReact/static/js/main.6ccd5e16.js",
     "index.html": "/SimpleGamesInReact/index.html",
-    "main.b244adcc.css.map": "/SimpleGamesInReact/static/css/main.b244adcc.css.map",
+    "main.a2092627.css.map": "/SimpleGamesInReact/static/css/main.a2092627.css.map",
     "main.6ccd5e16.js.map": "/SimpleGamesInReact/static/js/main.6ccd5e16.js.map"
   },
   "entrypoints": [
-    "static/css/main.b244adcc.css",
+    "static/css/main.a2092627.css",
     "static/js/main.6ccd5e16.js"
   ]
 }
