@@ -18,7 +18,10 @@ const Cell = (props) => {
     let interval = null;
     if (props.showMines === true && props.values.value === "X") {
       if (!props.values.clicked) {
-        opentime.current = generateRandom(1, DIFFICULTY_LEVEL[props.diff].animTime);
+        opentime.current = generateRandom(
+          1,
+          DIFFICULTY_LEVEL[props.diff].animTime
+        );
       }
       openClass.current = generateRandom(1, 9);
       interval = setInterval(() => {
@@ -66,23 +69,7 @@ const Cell = (props) => {
   };
   const renderNonMinedCells = () => {
     return (
-      <div
-        className="text-center"
-        onMouseEnter={() => {
-          if (!props.showMines) {
-            if (!props.values.isOpened) {
-              setBgc("#bfe17d");
-            } else if (props.values.isOpened && props.values.value !== 0) {
-              setBgc("#ebd1b7");
-            }
-          }
-        }}
-        onMouseLeave={() => {
-          if (!props.showMines) {
-            setBackGroundColor();
-          }
-        }}
-      >
+      <div className="text-center">
         {props.values.flagged ? (
           <img
             src={flag}
@@ -165,6 +152,20 @@ const Cell = (props) => {
       <div
         onClick={(e) => handleClick(e)}
         onContextMenu={(e) => handleRightClick(e)}
+        onMouseEnter={() => {
+          if (!props.showMines) {
+            if (!props.values.isOpened) {
+              setBgc("#bfe17d");
+            } else if (props.values.isOpened && props.values.value !== 0) {
+              setBgc("#ebd1b7");
+            }
+          }
+        }}
+        onMouseLeave={() => {
+          if (!props.showMines) {
+            setBackGroundColor();
+          }
+        }}
         style={{
           ...props.styles,
           height: "100%",
