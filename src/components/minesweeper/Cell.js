@@ -44,7 +44,7 @@ const Cell = (props) => {
     } else if (props.values.isOpened && !props.values.toggle) {
       setBgc("#d7b899");
     }
-  }, [props.values.isOpened, props.values.toggle]);
+  }, [props.values.isOpened, props.values.toggle, props.showMines]);
   const setBackGroundColor = () => {
     if (props.values.isOpened && props.values.toggle) {
       setBgc("#e6c1a0");
